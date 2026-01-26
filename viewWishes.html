@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Birthday Wishes</title>
+    <!-- Birthday Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            /* Primary purples from image */
+            --purple-main: #8e6ccf;     /* soft lavender */
+            --purple-deep: #6f4bb8;     /* deeper floral purple */
+            --purple-light: #ede7f8;    /* very light lavender */
+            --purple-glow: rgba(142, 108, 207, 0.45);
+            
+            /* Text */
+            --text-dark: #3a2f4f;
+            --text-muted: #6b5a85;
+            
+            /* White form */
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Transparent Navbar */
+        nav {
+            background-color: rgba(255, 255, 255, 0);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navbar on scroll - blurred background */
+        nav.scrolled {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav.scrolled a {
+            color: var(--text-dark);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled .hamburger span {
+            background-color: var(--text-dark);
+        }
+
+        /* Hamburger animation for menu open */
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--purple-main);
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+
+        /* Banner */
+        .banner {
+            background-image: url('./images/footerImage.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            height: 35vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 30vh;
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .banner-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 105, 180, 0.5);
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive Banner */
+        @media (max-width: 768px) {
+            .banner {
+                height: 30vh;
+                min-height: 25vh;
+                background-attachment: scroll;
+            }
+
+            .banner h1 {
+                font-size: 1.8rem;
+            }
+
+            .banner p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner {
+                height: auto;
+                min-height: 25vh;
+                padding: 2rem 1rem;
+            }
+
+            .banner h1 {
+                font-size: 1.5rem;
+            }
+
+            .banner p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Wishes Grid Section */
+        .wishes-section {
+            background-image: url('./images/body\ image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 3rem 2rem;
+            max-width: 100%;
+            margin: 0;
+        }
+
+        .wishes-section h1 {
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 34px;
+            color: var(--purple-deep);
+        }
+
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--purple-main);
+            box-shadow: 0 0 12px var(--purple-glow);
+            outline: none;
+        }
+
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1000px) {
+            .wishes-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 680px) {
+            .wishes-grid { grid-template-columns: 1fr; }
+        }
+
+        .wish-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 18px;
+            min-height: 200px;
+            box-shadow: 0 12px 30px var(--purple-glow);
+        }
+
+        .card-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-deep));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .message {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .view-more {
+            font-size: 13px;
+            color: var(--purple-main);
+            cursor: pointer;
+        }
+
+        .reactions span {
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .empty-state {
+            text-align: center;
+            margin-top: 60px;
+            color: #777;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(58, 47, 79, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 18px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px var(--purple-glow);
+        }
+
+        .close {
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .total-wishes {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .add-wish-btn { 
+            display: flex; 
+            justify-content: center; 
+            margin-top: 14px; 
+        }
+
+        .add-wish-btn button {
+            padding: 12px 22px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-deep));
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 16px var(--purple-glow);
+            transition: 0.3s ease;
+        }
+
+        .add-wish-btn button:hover {
+            box-shadow: 0 0 22px var(--purple-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        footer {
+            background-image: url('./images/footerImage.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        footer h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 105, 180, 0.6);
+            margin: 0;
+            letter-spacing: 1px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 105, 180, 0.6);
+            }
+            50% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 105, 180, 1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 1.5rem 1rem;
+            }
+
+            footer h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                flex-wrap: wrap;
+                background-color: rgba(142, 108, 207, 0.95) !important;
+                backdrop-filter: blur(10px);
+            }
+
+            nav a {
+                color: white !important;
+            }
+
+            nav a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            /* Disable scroll effect on smaller screens */
+            nav.scrolled {
+                background-color: rgba(142, 108, 207, 0.95) !important;
+                backdrop-filter: blur(10px) !important;
+                box-shadow: none !important;
+            }
+
+            nav.scrolled a {
+                color: white !important;
+            }
+
+            nav.scrolled a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            nav ul {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(142, 108, 207, 0.95);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                width: 100%;
+                visibility: hidden;
+                opacity: 0;
+                transition: max-height 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
+            }
+
+            nav ul.active {
+                max-height: 500px;
+                visibility: visible;
+                opacity: 1;
+            }
+
+            nav ul li {
+                padding: 0.8rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav ul li a {
+                color: white !important;
+            }
+
+            nav ul li a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger span {
+                background-color: white;
+            }
+
+            nav.scrolled ul {
+                background: rgba(142, 108, 207, 0.95);
+            }
+
+            .wishes-section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul id="navMenu">
+            <li><a href="home.html">Happy Birthday</a></li>
+            <li><a href="viewWishes.html">View Wishes ❤️</a></li>
+            <li><a href="#">Gallery</a></li>
+        </ul>
+    </nav>
+
+    <section class="banner">
+        <h2 class="banner-title">Wall of Wishes</h2>
+    </section>
+
+    <section class="wishes-section">
+        <h1>Birthday Messages 💜</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search by name..." oninput="filterWishes(this.value)">
+        </div>
+
+        <div id="loading" class="empty-state">Loading wishes...</div>
+
+        <div class="wishes-grid" id="wishesGrid"></div>
+
+        <div class="total-wishes" id="totalWishes"></div>
+
+        <div class="add-wish-btn" id="addWishBtn" style="display:none;">
+            <button onclick="location.href='home.html'">
+                ❤️ Add your wish
+            </button>
+        </div>
+    </section>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="close" onclick="closeModal()">✖</div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <h1>Happy Birthday Athena!!!</h1>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const nav = document.querySelector('nav');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        let allWishes = [];
+
+        /* 🔒 HARD NORMALIZER */
+        function normalizeWish(w) {
+            return {
+                wishId: String(w.wishId || ""),
+                name: String(w.name || ""),
+                message: String(w.message || ""),
+                date: String(w.date || ""),
+                time: String(w.time || ""),
+                reaction_heart: Number(w.reaction_heart || 0),
+                reaction_party: Number(w.reaction_party || 0),
+                reaction_pray: Number(w.reaction_pray || 0)
+            };
+        }
+
+        /* ✅ SAFE DATE FORMATTER */
+        function formatDateTime(w) {
+            if (w.date && w.time) return `📅 ${w.date} • ${w.time}`;
+            if (w.date) return `📅 ${w.date}`;
+            if (w.time) return `📅 ${w.time}`;
+            return "";
+        }
+
+        function renderWishes(data) {
+            const grid = document.getElementById("wishesGrid");
+            const loading = document.getElementById("loading");
+            const total = document.getElementById("totalWishes");
+            const addBtn = document.getElementById("addWishBtn");
+
+            grid.innerHTML = "";
+
+            // ✅ FIX: Proper empty state
+            if (!data.length) {
+                loading.innerHTML = `
+                    <p>No wishes yet 💭</p>
+                    <p>Be the first to make a wish 💛</p>
+                `;
+                loading.style.display = "block";
+                total.innerHTML = "";
+                addBtn.style.display = "flex";
+                return;
+            }
+
+            loading.style.display = "none";
+            addBtn.style.display = "flex";
+            total.innerText = `${data.length} wishes shared so far`;
+
+            data.forEach(w => {
+                const card = document.createElement("div");
+                card.className = "wish-card";
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="avatar">${w.name.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <div class="name">${w.name}</div>
+                            <div class="date">${formatDateTime(w)}</div>
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        ${w.message.length > 120 ? w.message.slice(0,120) + "..." : w.message}
+                    </div>
+
+                    ${w.message.length > 120
+                        ? `<div class="view-more" onclick='openModal(${JSON.stringify(w)})'>View more</div>`
+                        : ""}
+
+                    <div class="reactions">
+                        <span onclick="addReaction('${w.wishId}','heart')">❤️ ${w.reaction_heart}</span>
+                        <span onclick="addReaction('${w.wishId}','party')">🎉 ${w.reaction_party}</span>
+                        <span onclick="addReaction('${w.wishId}','pray')">🙏 ${w.reaction_pray}</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(w) {
+            document.getElementById("modalBody").innerHTML = `
+                <h3>${w.name}</h3>
+                <p class="date">${formatDateTime(w)}</p>
+                <p>${w.message}</p>
+            `;
+            document.getElementById("modal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        function filterWishes(val) {
+            renderWishes(allWishes.filter(w =>
+                w.name.toLowerCase().includes(val.toLowerCase())
+            ));
+        }
+
+        async function fetchWishes() {
+            const url = "https://script.google.com/macros/s/AKfycbzy1Rd5mKWy2DI1oDmZGhPy9vUMoERaVNHuD4nFfzPkVFh-7nFUzNy7MCHbSkZEN_r6/exec?action=get";
+            const res = await fetch(url);
+            const raw = await res.json();
+
+            allWishes = raw.map(normalizeWish).reverse();
+            renderWishes(allWishes);
+        }
+
+        async function addReaction(id, type) {
+            await fetch(
+                `https://script.google.com/macros/s/AKfycbzy1Rd5mKWy2DI1oDmZGhPy9vUMoERaVNHuD4nFfzPkVFh-7nFUzNy7MCHbSkZEN_r6/exec?action=react&id=${id}&type=${type}`
+            );
+            fetchWishes();
+        }
+
+        fetchWishes();
+    </script>
+</body>
+</html>
