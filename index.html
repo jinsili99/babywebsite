@@ -29,6 +29,11 @@
             --white: #ffffff;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+
         body {
             margin: 0;
             padding: 0;
@@ -553,7 +558,7 @@
     </section>
 
     <!-- Form Section with Background Image -->
-    <section class="form-section">
+    <section class="form-section" id="wishform">
         <!-- Wish Form -->
         <div class="wish-container" id="formBox">
         <div class="icon-wrapper">
@@ -585,7 +590,7 @@
         <h1>Thank You!</h1>
         <p>Your birthday wish has been delivered with love. Your thoughtful words will bring so much joy!</p>
         <button onclick="resetForm()">Send Another Wish</button>
-        <a href="https://sites.google.com/view/happybirthdayjoyjohnson/view-wishes" target="_blank" rel="noopener noreferrer" style="display: inline-flex; text-decoration: none; margin-top: 20px;">
+        <a href="viewWishes.html" target="_self" style="display: inline-flex; text-decoration: none; margin-top: 20px;">
             <div style="background: linear-gradient(135deg, #8e6ccf, #6f4bb8); color: white; padding: 14px 26px; border-radius: 10px; font-size: 16px; font-weight: 500; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                 View All Wishes
             </div>
