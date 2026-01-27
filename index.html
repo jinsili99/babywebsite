@@ -213,11 +213,13 @@
             padding: 3rem 2rem;
             text-align: center;
             height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 60vh;
+            box-sizing: border-box;
         }
 
         .banner h1 {
@@ -231,11 +233,39 @@
         }
 
         /* Responsive Banner */
+        @media (max-width: 1366px) {
+            .banner {
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                height: auto;
+                min-height: 0;
+                padding: 0;
+                aspect-ratio: 16 / 9;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .banner {
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                height: auto;
+                min-height: 0;
+                padding: 0;
+                aspect-ratio: 16 / 9;
+            }
+        }
+
         @media (max-width: 768px) {
             .banner {
-                height: 70vh;
-                min-height: 50vh;
+                background-size: contain;
+                background-repeat: no-repeat;
                 background-attachment: scroll;
+                height: auto;
+                min-height: 0;
+                padding: 0;
+                aspect-ratio: 16 / 9;
             }
 
             .banner h1 {
@@ -249,13 +279,18 @@
 
         @media (max-width: 480px) {
             .banner {
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-attachment: scroll;
                 height: auto;
-                min-height: 60vh;
-                padding: 2rem 1rem;
+                min-height: 0;
+                padding: 0;
+                aspect-ratio: 16 / 9;
             }
 
             .banner h1 {
                 font-size: 1.5rem;
+                margin-bottom: 0.5rem;
             }
 
             .banner p {
