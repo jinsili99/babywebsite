@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Baby Birthday</title>
+    <!-- Birthday Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            /* Primary purples from image */
+            --purple-main: #8e6ccf;     /* soft lavender */
+            --purple-deep: #6f4bb8;     /* deeper floral purple */
+            --purple-light: #ede7f8;    /* very light lavender */
+            --purple-glow: rgba(142, 108, 207, 0.45);
+            
+            /* Text */
+            --text-dark: #3a2f4f;
+            --text-muted: #6b5a85;
+            
+            /* White form */
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Transparent Navbar */
+        nav {
+            background-color: rgba(255, 255, 255, 0);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navbar on scroll - blurred background */
+        nav.scrolled {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav.scrolled a {
+            color: var(--text-dark);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled .hamburger span {
+            background-color: var(--text-dark);
+        }
+
+        /* Hamburger animation for menu open */
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                flex-wrap: wrap;
+                background-color: rgba(142, 108, 207, 0.95) !important;
+                backdrop-filter: blur(10px);
+            }
+
+            nav a {
+                color: white !important;
+            }
+
+            nav a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            /* Disable scroll effect on smaller screens */
+            nav.scrolled {
+                background-color: rgba(142, 108, 207, 0.95) !important;
+                backdrop-filter: blur(10px) !important;
+                box-shadow: none !important;
+            }
+
+            nav.scrolled a {
+                color: white !important;
+            }
+
+            nav.scrolled a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            nav ul {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(142, 108, 207, 0.95);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                width: 100%;
+                visibility: hidden;
+                opacity: 0;
+                transition: max-height 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
+            }
+
+            nav ul.active {
+                max-height: 500px;
+                visibility: visible;
+                opacity: 1;
+            }
+
+            nav ul li {
+                padding: 0.8rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav ul li a {
+                color: white !important;
+            }
+
+            nav ul li a:hover {
+                color: var(--purple-main) !important;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger span {
+                background-color: white;
+            }
+
+            nav.scrolled ul {
+                background: rgba(142, 108, 207, 0.95);
+            }
+        }
+
+        main {
+            margin-top: 4rem;
+            padding: 2rem;
+        }
+
+        /* Video Banner */
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .banner video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: white;
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive Banner */
+        @media (max-width: 768px) {
+            .banner {
+                height: 70vh;
+                min-height: 50vh;
+            }
+
+            .banner h1 {
+                font-size: 1.8rem;
+            }
+
+            .banner p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .banner {
+                height: auto;
+                min-height: 60vh;
+                padding: 2rem 1rem;
+            }
+
+            .banner h1 {
+                font-size: 1.5rem;
+            }
+
+            .banner p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Image Cluster Section */
+        .gallery-section {
+            background-image: url('./images/body\ image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 4rem 2rem;
+        }
+
+        .gallery-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 3rem;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .image-cluster {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            auto-rows: 200px;
+        }
+
+        .image-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .image-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+        .image-item:nth-child(3) { grid-column: span 1; grid-row: span 2; }
+        .image-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+        .image-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
+        .image-item:nth-child(6) { grid-column: span 1; grid-row: span 1; }
+        .image-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+        .image-item:nth-child(8) { grid-column: span 2; grid-row: span 1; }
+        .image-item:nth-child(9) { grid-column: span 1; grid-row: span 1; }
+        .image-item:nth-child(10) { grid-column: span 1; grid-row: span 1; }
+
+        .image-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(142, 108, 207, 0.3);
+        }
+
+        .image-item img,
+        .image-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-item video {
+            background-color: #000;
+        }
+
+        .image-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(142, 108, 207, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        .image-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 1024px) {
+            .image-cluster {
+                grid-template-columns: repeat(3, 1fr);
+                auto-rows: 180px;
+                gap: 1.2rem;
+            }
+            .image-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+            .image-item:nth-child(5) { grid-column: span 2; }
+            .image-item:nth-child(8) { grid-column: span 2; }
+        }
+
+        @media (max-width: 768px) {
+            .image-cluster {
+                grid-template-columns: repeat(2, 1fr);
+                auto-rows: 150px;
+                gap: 1rem;
+            }
+            .image-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+            .image-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+            .image-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
+            .image-item:nth-child(8) { grid-column: span 2; grid-row: span 1; }
+
+            .gallery-section h2 {
+                font-size: 1.6rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-cluster {
+                grid-template-columns: repeat(2, 1fr);
+                auto-rows: 120px;
+                gap: 0.8rem;
+            }
+            .image-item:nth-child(1),
+            .image-item:nth-child(5),
+            .image-item:nth-child(8) { grid-column: span 1; }
+
+            .gallery-section {
+                padding: 2rem 1rem;
+            }
+
+            .gallery-section h2 {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-image: url('./images/footerImage.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        footer h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 105, 180, 0.6);
+            margin: 0;
+            letter-spacing: 1px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 105, 180, 0.6);
+            }
+            50% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 105, 180, 1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 1.5rem 1rem;
+            }
+
+            footer h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul id="navMenu">
+            <li><a href="index.html">Happy Birthday</a></li>
+            <li><a href="viewWishes.html">View Wishes ❤️</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+    </nav>
+
+    <!-- Video Banner -->
+    <section class="banner">
+        <video autoplay muted loop playsinline>
+            <source src="./images/banner-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="banner-content">
+            <h1>Memory Gallery</h1>
+            <p>Moments that make life beautiful</p>
+        </div>
+    </section>
+
+    <!-- Image Cluster Gallery -->
+    <section class="gallery-section">
+        <h2>Beautiful Memories</h2>
+        <div class="image-cluster">
+            <div class="image-item">
+                <img src="./images/image1.jpg" alt="Gallery Image 1">
+            </div>
+            <div class="image-item">
+                <img src="./images/image2.jpg" alt="Gallery Image 2">
+            </div>
+            <div class="image-item">
+                <video autoplay muted loop playsinline>
+                    <source src="./images/video1.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="image-item">
+                <img src="./images/image3.jpg" alt="Gallery Image 3">
+            </div>
+            <div class="image-item">
+                <img src="./images/image4.png" alt="Gallery Image 4">
+            </div>
+            <div class="image-item">
+                <img src="./images/image5.jpg" alt="Gallery Image 5">
+            </div>
+            <div class="image-item">
+                <img src="./images/image6.jpg" alt="Gallery Image 6">
+            </div>
+            <div class="image-item">
+                <video autoplay muted loop playsinline>
+                    <source src="./images/video2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="image-item">
+                <img src="./images/image7.jpg" alt="Gallery Image 7">
+            </div>
+            <div class="image-item">
+                <img src="./images/image8.jpg" alt="Gallery Image 8">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h1>Happy Birthday Athena!!!</h1>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const nav = document.querySelector('nav');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
