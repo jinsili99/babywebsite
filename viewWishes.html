@@ -614,6 +614,29 @@
                 padding: 2rem 1rem;
             }
         }
+        
+        /* FIX: Contain long text inside View More modal */
+.modal-content {
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+#modalBody {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+#modalBody p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+        
+        
+        
+        
     </style>
 </head>
 <body>
