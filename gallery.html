@@ -205,15 +205,23 @@
 
         /* Video Banner */
         .banner {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: black; /* fallback */
+}
+
+.video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* keeps video fully visible */
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* ensures whole video is visible */
+    display: block;
+}
 
         .banner video {
             position: absolute;
@@ -491,6 +499,18 @@
                 font-size: 1.5rem;
             }
         }
+        
+        .banner::after {
+    z-index: 0; /* move behind the video */
+}
+.banner video {
+    z-index: 1; /* video above overlay */
+    pointer-events: auto; /* just in case */
+}
+
+        
+        
+        
     </style>
 </head>
 <body>
@@ -509,12 +529,14 @@
 
     <!-- Video Banner -->
     <section class="banner">
-        <video autoplay muted loop playsinline id="heroVideo">
-            <source src="./images/Video11.mp4" type="video/mp4">
+    <div class="video-wrapper">
+        <video controls playsinline id="heroVideo">
+            <source src="https://res.cloudinary.com/dbsahcar8/video/upload/Video11_ezk1bs.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-       
-    </section>
+    </div>
+
+</section>
 
     <!-- Image Cluster Gallery -->
     <section class="gallery-section">
@@ -597,6 +619,8 @@
     video.muted = false;
     video.volume = 1;
   }, { once: true });
+
+
 
     </script>
 </body>
